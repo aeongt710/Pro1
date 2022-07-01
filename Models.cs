@@ -14,12 +14,9 @@ namespace Pro1
         public bool isPurchased { get; set; }
         public IdentityUser TicketCreator { get; set; }
         public string TicketCreatorId { get; set; }
+
+        public IdentityUser TicketBuyer { get; set; }
+        public string? TicketBuyerId { get; set; }
     }
 
-    public class PuchasedTicket
-    {
-        public int Id { get; set; }
-        public IdentityUser TicketOwner { get; set; }
-        public string TicketOwnerId { get; set; }
-    }
 }

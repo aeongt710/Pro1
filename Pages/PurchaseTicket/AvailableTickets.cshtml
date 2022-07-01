@@ -1,0 +1,56 @@
+﻿@page
+@model Pro1.Pages.PurchaseTicket.AvailableTicketsModel
+
+@{
+    ViewData["Title"] = "AvailableTickets";
+}
+
+<h1>AvailableTickets</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket[0].TicketName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket[0].isPurchased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket[0].TicketCreator)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Ticket) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isPurchased)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketCreator.Id)
+            </td>
+            <td>
+                <form method="post">
+                    <input type="hidden" value="@item.Id" name="Id"/>
+                    <button type="submit" class="btn btn-secondary">Buy Now</button>
+                </form>
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

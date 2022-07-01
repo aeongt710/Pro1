@@ -9,17 +9,17 @@ using Pro1.Data;
 
 #nullable disable
 
-namespace Pro1.Data.Migrations
+namespace Pro1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220701152742_init")]
-    partial class init
+    [Migration("20220701164635_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -169,12 +169,10 @@ namespace Pro1.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -211,12 +209,10 @@ namespace Pro1.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -224,25 +220,6 @@ namespace Pro1.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Pro1.PuchasedTicket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("TicketOwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TicketOwnerId");
-
-                    b.ToTable("PurchasedTickets");
                 });
 
             modelBuilder.Entity("Pro1.Ticket", b =>
@@ -256,6 +233,9 @@ namespace Pro1.Data.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<string>("TicketBuyerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("TicketCreatorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -268,6 +248,8 @@ namespace Pro1.Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketBuyerId");
 
                     b.HasIndex("TicketCreatorId");
 
@@ -325,24 +307,19 @@ namespace Pro1.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Pro1.PuchasedTicket", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "TicketOwner")
-                        .WithMany()
-                        .HasForeignKey("TicketOwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TicketOwner");
-                });
-
             modelBuilder.Entity("Pro1.Ticket", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "TicketBuyer")
+                        .WithMany()
+                        .HasForeignKey("TicketBuyerId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "TicketCreator")
                         .WithMany()
                         .HasForeignKey("TicketCreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TicketBuyer");
 
                     b.Navigation("TicketCreator");
                 });
